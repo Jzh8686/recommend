@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "efa946fd-d758-4e4f-b0ab-190a62944fe8",
+		"name": "spring security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "测试用例",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"测试\",\n\t\"author\":\"用例\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8091/book/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8091",
+					"path": [
+						"book",
+						""
+					]
+				},
+				"description": "添加书籍"
+			},
+			"response": []
+		},
+		{
+			"name": "测试列表",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8091/book/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8091",
+					"path": [
+						"book",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "注册示例",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"guyijing\",\n\t\"password\":\"guyijing\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8091/user/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8091",
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "登录示例",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "guyijing",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "guyijing",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8091/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8091",
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
