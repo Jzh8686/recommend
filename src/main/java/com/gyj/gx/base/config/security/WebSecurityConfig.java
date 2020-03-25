@@ -1,14 +1,28 @@
-package com.gyj.gx.base.config;
+package com.gyj.gx.base.config.security;
 
+import com.gyj.gx.base.config.security.AjaxAuthenticationEntryPoint;
+import com.gyj.gx.base.config.security.MyAuthenticationProvider;
+import com.gyj.gx.base.config.security.MyAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AjaxAuthenticationEntryPoint ajaxAuthenticationEntryPoint;
+
+    @Autowired
+    private MyAuthenticationProvider authenticationProvider;
+
+    @Autowired
+    private MyAuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    private MyAuthenticationFailureHandler failureHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -33,21 +47,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .ignoringAntMatchers("/user/*","/user","/register","/validateCheckCode","/login", "/upload","/save/*",
 //                        "/changePassword","/logout","/user/search/*","/resetPassword","/validateCheckCode");
         // 记得在这里加上需要认证的URL
-        http.authorizeRequests()
+        // TODO 异常处理、登出、基于TOKEN+REDIS而不是JSESSION
+        http
+                .httpBasic()
+                .authenticationEntryPoint(ajaxAuthenticationEntryPoint)
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/user/login").permitAll()
+                .successHandler(successHandler)
+                .failureHandler(failureHandler)
+                .permitAll()
+                .and()
+                .authorizeRequests()
                 .antMatchers("/test/*", "/js/*", "/css/*", "/theme/**", "/laydate/**").permitAll()
-                .antMatchers("/book/*", "/book").permitAll()
+                .antMatchers("/book/*", "/book").authenticated()
+                .antMatchers("/user/register").permitAll()
                 .anyRequest().authenticated();
 
         // 关闭CSRF，防跨域以放行POST等请求
         http.csrf().disable();
     }
 
-    @Autowired
-    AUserDetailsService userDetailsService;
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.authenticationProvider(authenticationProvider);
     }
 
 }

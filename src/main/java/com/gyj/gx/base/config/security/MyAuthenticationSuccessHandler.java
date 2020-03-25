@@ -1,5 +1,9 @@
-package com.gyj.gx.base.config;
+package com.gyj.gx.base.config.security;
 
+import com.alibaba.fastjson.JSON;
+import com.gyj.gx.base.returns.RespCode;
+import com.gyj.gx.base.returns.RespEntity;
+import com.gyj.gx.domain.UserEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -16,7 +20,13 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
-        httpServletResponse.addCookie(new Cookie("id",((SecurityUser)authentication.getPrincipal()).getId()+""));
-        httpServletResponse.sendRedirect("/pages/index.html");
+        UserEntity userEntity = ((MyAuthenticationToken) authentication).getUserEntity();
+        RespEntity respEntity = new RespEntity(RespCode.SUCCESS, userEntity);
+
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.getWriter().write(JSON.toJSONString(respEntity));
+
+//        httpServletResponse.addCookie(new Cookie("id",((SecurityUser)authentication.getPrincipal()).getId()+""));
+//        httpServletResponse.sendRedirect("/pages/index.html");
     }
 }
