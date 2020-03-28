@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gyj.gx.base.page.PageModule;
 
 public class PageUtil {
-    public static PageModule transToPageModule(IPage page){
+    public static <T> PageModule<T> transToPageModule(IPage<T> page){
         PageModule pageModule = new PageModule();
         pageModule.setTotalCount((int) page.getTotal());
         pageModule.setPageNum((int) page.getCurrent());

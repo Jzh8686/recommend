@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test/*", "/js/*", "/css/*", "/theme/**", "/laydate/**").permitAll()
                 .antMatchers("/book/*", "/book").authenticated()
                 .antMatchers("/user/register").permitAll()
+                .antMatchers("/category/*").authenticated()
                 .anyRequest().authenticated();
 
         // 关闭CSRF，防跨域以放行POST等请求

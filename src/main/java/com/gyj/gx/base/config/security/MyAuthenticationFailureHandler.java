@@ -20,7 +20,9 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
 
         RespEntity respEntity = new RespEntity(RespCode.PASSWORD_INCORRECT);
 
-        httpServletResponse.setCharacterEncoding("UTF-8");
+//        httpServletResponse.setCharacterEncoding("UTF-8");
+
+        httpServletResponse.setHeader("Content-Type", "text/html; charset=UTF-8");
         httpServletResponse.getWriter().write(JSON.toJSONString(respEntity));
     }
 }
