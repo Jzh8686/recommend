@@ -25,4 +25,10 @@
         ORDER BY c.id
     </select>
 
+    <select id="getProblemNum" resultType="Integer">
+        SELECT COUNT(*)
+        FROM t_category_problem
+        WHERE cid = #{map.id}
+    </select>
+
 </mapper>

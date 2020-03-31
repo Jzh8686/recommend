@@ -9,6 +9,7 @@ import com.gyj.gx.base.page.PageModule;
 import com.gyj.gx.base.returns.RespCode;
 import com.gyj.gx.base.util.PageUtil;
 import com.gyj.gx.base.util.validator.FirstValidator;
+import com.gyj.gx.base.util.validator.SecondValidator;
 import com.gyj.gx.base.util.validator.ValidatorBeanFactory;
 import com.gyj.gx.dao.CategoryMapper;
 import com.gyj.gx.domain.CategoryEntity;
@@ -68,5 +69,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         PageModule<CategoryDTO> pm = PageUtil.transToPageModule(page1);
 
         return pm;
+    }
+
+    @Override
+    public boolean deleteCategory(CategoryVO categoryVO) {
+        ValidatorBeanFactory.validate(categoryVO, SecondValidator.class);
+
+        if(baseMapper.getProblemNum(categoryVO)!=0)
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"不能删除已有题目的分类");
+
+        return removeById(categoryVO.getId());
     }
 }

@@ -2,6 +2,7 @@ package com.gyj.gx.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -16,5 +17,7 @@ public class UserEntity {
     private String realname;//真名
     private String role;//角色
     private Integer state;//状态 0：激活 1：冻结
+    @TableLogic
+    private Integer deleted;// 逻辑删除 0 未删除 1 已删除
 
 }

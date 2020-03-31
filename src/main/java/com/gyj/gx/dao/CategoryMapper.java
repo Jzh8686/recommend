@@ -14,4 +14,6 @@ public interface CategoryMapper extends BaseMapper<CategoryEntity> {
 
     IPage<CategoryDTO> selectPageVO(Page page, @Param("map") CategoryVO categoryVO);
 
+    Integer getProblemNum(@Param("map") CategoryVO categoryVO);
+
 }

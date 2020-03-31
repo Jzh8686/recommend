@@ -16,4 +16,6 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     PageModule<CategoryDTO> getPageList(PageModule pageModule,CategoryVO categoryVO);
 
+    boolean deleteCategory(CategoryVO categoryVO);
+
 }

@@ -43,4 +43,16 @@ public class CategoryController extends BaseController{
     public RespEntity getPageList(PageModule pageModule,CategoryVO categoryVO){
         return new RespEntity(RespCode.SUCCESS, categoryService.getPageList(pageModule, categoryVO));
     }
+
+    /**
+     * 删除分类
+     * 如果题目数为0，可以删除
+     * 如果题目数不为0，不能删除
+     * @param categoryVO
+     * @return
+     */
+    @DeleteMapping("")
+    public RespEntity deleteCategory(CategoryVO categoryVO){
+        return  new RespEntity(RespCode.SUCCESS,categoryService.deleteCategory(categoryVO));
+    }
 }
