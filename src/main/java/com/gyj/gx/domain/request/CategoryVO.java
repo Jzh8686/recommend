@@ -2,6 +2,7 @@ package com.gyj.gx.domain.request;
 
 import com.gyj.gx.base.util.validator.FirstValidator;
 import com.gyj.gx.base.util.validator.SecondValidator;
+import com.gyj.gx.base.util.validator.ThirdValidator;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -18,5 +19,7 @@ public class CategoryVO {
     @NotBlank(message = "分类名不存在",groups = {FirstValidator.class})
     @Length(min=1,max=20,message = "分类名长度超过限制",groups = {FirstValidator.class})
     private String subtype;
+
+    @NotNull(message = "类型不能为空",groups = {ThirdValidator.class})
     private Integer type;
 }

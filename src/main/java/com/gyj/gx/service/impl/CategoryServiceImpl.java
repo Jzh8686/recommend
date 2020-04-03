@@ -10,6 +10,7 @@ import com.gyj.gx.base.returns.RespCode;
 import com.gyj.gx.base.util.PageUtil;
 import com.gyj.gx.base.util.validator.FirstValidator;
 import com.gyj.gx.base.util.validator.SecondValidator;
+import com.gyj.gx.base.util.validator.ThirdValidator;
 import com.gyj.gx.base.util.validator.ValidatorBeanFactory;
 import com.gyj.gx.dao.CategoryMapper;
 import com.gyj.gx.domain.CategoryEntity;
@@ -27,9 +28,14 @@ import java.util.List;
 @Slf4j
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEntity> implements CategoryService {
     @Override
-    public List<CategoryDTO> getList() {
+    public List<CategoryDTO> getList(CategoryVO categoryVO) {
+        ValidatorBeanFactory.validate(categoryVO, ThirdValidator.class);
+
         // list获取所有的categoryEntity
-        List<CategoryEntity> categoryEntityList = list();
+        List<CategoryEntity> categoryEntityList = list(
+                new QueryWrapper<CategoryEntity>().lambda()
+                .eq(CategoryEntity::getType,categoryVO.getType())
+        );
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
 
         for (CategoryEntity categoryEntity : categoryEntityList) {

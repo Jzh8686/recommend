@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CategoryService extends IService<CategoryEntity> {
 
-    List<CategoryDTO> getList();
+    List<CategoryDTO> getList(CategoryVO categoryVO);
 
     boolean saveCategory(CategoryVO categoryVO);
 

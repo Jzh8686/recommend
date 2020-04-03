@@ -19,8 +19,8 @@ public class CategoryController extends BaseController{
      * 获取分类列表(无筛选条件)
      */
     @GetMapping("list")
-    public RespEntity getList(){
-        return  new RespEntity(RespCode.SUCCESS,categoryService.getList());
+    public RespEntity getList(CategoryVO categoryVO){
+        return  new RespEntity(RespCode.SUCCESS,categoryService.getList(categoryVO));
     }
     /**
      * 添加分类
