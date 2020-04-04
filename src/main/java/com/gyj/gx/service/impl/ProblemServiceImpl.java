@@ -1,5 +1,6 @@
 package com.gyj.gx.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -45,13 +46,20 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, ProblemEntity
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteProblem(ProblemVO problemVO) {
         ValidatorBeanFactory .validate(problemVO, FirstValidator.class);
 
         if(baseMapper.getRelevantPaperCount(problemVO)!=0)
             throw new BusinessException(RespCode.CUSTOM_ERROR,"不能删除被选入试卷的题目");
 
-        return removeById(problemVO.getId());
+        removeById(problemVO.getId());
+
+        categoryProblemService.remove(
+                new QueryWrapper<CategoryProblemEntity>().lambda()
+                .eq(CategoryProblemEntity::getPid,problemVO.getId())
+        ); //把问题原有信息删除
+        return true;
     }
 
     @Override
@@ -83,5 +91,21 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, ProblemEntity
         categoryProblemService.saveBatch(cidList);
 
         return true;
+    }
+
+    @Override
+    public ProblemDTO problemDetail(ProblemVO problemVO) {
+        ValidatorBeanFactory.validate(problemVO,FirstValidator.class);
+
+        ProblemEntity problem =getOne(new QueryWrapper<ProblemEntity>().lambda()
+                .eq(ProblemEntity::getId,problemVO.getId()));
+        if(problem==null){
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"问题不存在");
+        }
+
+        ProblemDTO problemDTO=new ProblemDTO();
+        BeanUtils.copyProperties(problem,problemDTO);
+
+        return problemDTO;
     }
 }

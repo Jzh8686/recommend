@@ -1,5 +1,7 @@
 package com.gyj.gx.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,11 +33,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
     public List<CategoryDTO> getList(CategoryVO categoryVO) {
         ValidatorBeanFactory.validate(categoryVO, ThirdValidator.class);
 
+        LambdaQueryWrapper<CategoryEntity> queryWrapper = new QueryWrapper<CategoryEntity>().lambda();
+        if (categoryVO.getType()!=4)
+            queryWrapper.eq(CategoryEntity::getType,categoryVO.getType());
+
         // list获取所有的categoryEntity
-        List<CategoryEntity> categoryEntityList = list(
-                new QueryWrapper<CategoryEntity>().lambda()
-                .eq(CategoryEntity::getType,categoryVO.getType())
-        );
+        List<CategoryEntity> categoryEntityList = list(queryWrapper);
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
 
         for (CategoryEntity categoryEntity : categoryEntityList) {

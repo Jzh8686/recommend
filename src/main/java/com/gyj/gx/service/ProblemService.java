@@ -10,4 +10,5 @@ public interface ProblemService extends IService<ProblemEntity> {
     PageModule<ProblemDTO> getPageList(PageModule pageModule, ProblemVO problemVO);
     boolean deleteProblem(ProblemVO problemVO);
     boolean saveProblem(ProblemVO problemVO);
+    ProblemDTO problemDetail(ProblemVO problemVO);
 }

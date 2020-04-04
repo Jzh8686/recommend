@@ -48,5 +48,14 @@ public class ProblemController extends BaseController{
     public RespEntity saveProblem(@RequestBody ProblemVO problemVO) {
         return new RespEntity(RespCode.SUCCESS, problemService.saveProblem(problemVO));
     }
+    /**
+     * 详情
+     * @param problemVO
+     * @return
+     */
+    @GetMapping("detail")
+    public RespEntity problemDetail(ProblemVO problemVO){
+        return new RespEntity(RespCode.SUCCESS, problemService.problemDetail(problemVO));
+    }
 
 }
