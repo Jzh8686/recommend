@@ -28,6 +28,8 @@
             <if test="map.description!=null and map.description!=''">
                 AND p.description LIKE CONCAT('%', #{map.description}, '%')
             </if>
+            ORDER BY p.id
+            LIMIT #{pg.skipNumber},#{pg.pageSize}
         </if>
         <if test="map.cid==null">
             SELECT p.id, p.problem_type, p.description, c.subtype, cp.cid
@@ -41,6 +43,76 @@
             <if test="map.description!=null and map.description!=''">
                 AND p.description LIKE CONCAT('%', #{map.description}, '%')
             </if>
+            ORDER BY p.id
+            LIMIT #{pg.skipNumber},#{pg.pageSize}
+        </if>
+    </select>
+
+    <select id="getTotalSearchCount" resultType="Integer">
+        <if test="map.cid!=null">
+            SELECT COUNT(DISTINCT p.id)
+            FROM t_category_problem cp
+            LEFT JOIN (SELECT id, problem_type, description FROM t_problem WHERE deleted = 0)p ON cp.pid = p.id
+            LEFT JOIN (SELECT cid, pid FROM t_category_problem WHERE deleted = 0)cpp ON p.id = cpp.pid
+            LEFT JOIN (SELECT id, subtype FROM t_category WHERE deleted = 0)c ON cpp.cid = c.id
+            WHERE cp.deleted = 0
+            AND cp.cid = #{map.cid}
+            <if test="map.problemType!=null and map.problemType!=2">
+                AND p.problem_type = #{map.problemType}
+            </if>
+            <if test="map.description!=null and map.description!=''">
+                AND p.description LIKE CONCAT('%', #{map.description}, '%')
+            </if>
+            ORDER BY p.id
+        </if>
+        <if test="map.cid==null">
+            SELECT COUNT(DISTINCT p.id)
+            FROM t_problem p
+            LEFT JOIN (SELECT pid, cid FROM t_category_problem WHERE deleted = 0) cp ON p.id = cp.pid
+            LEFT JOIN (SELECT subtype, type, id FROM t_category WHERE deleted = 0)c ON cp.cid = c.id
+            WHERE p.deleted = 0
+            <if test="map.problemType!=null and map.problemType!=2">
+                AND p.problem_type = #{map.problemType}
+            </if>
+            <if test="map.description!=null and map.description!=''">
+                AND p.description LIKE CONCAT('%', #{map.description}, '%')
+            </if>
+            ORDER BY p.id
+        </if>
+    </select>
+    
+    <select id="getGroupCount" resultType="Integer">
+        <if test="map.cid!=null">
+            SELECT COUNT(p.id)
+            FROM t_category_problem cp
+            LEFT JOIN (SELECT id, problem_type, description FROM t_problem WHERE deleted = 0)p ON cp.pid = p.id
+            LEFT JOIN (SELECT cid, pid FROM t_category_problem WHERE deleted = 0)cpp ON p.id = cpp.pid
+            LEFT JOIN (SELECT id, subtype FROM t_category WHERE deleted = 0)c ON cpp.cid = c.id
+            WHERE cp.deleted = 0
+            AND cp.cid = #{map.cid}
+            <if test="map.problemType!=null and map.problemType!=2">
+                AND p.problem_type = #{map.problemType}
+            </if>
+            <if test="map.description!=null and map.description!=''">
+                AND p.description LIKE CONCAT('%', #{map.description}, '%')
+            </if>
+            GROUP BY p.id
+            ORDER BY p.id
+        </if>
+        <if test="map.cid==null">
+            SELECT COUNT(p.id)
+            FROM t_problem p
+            LEFT JOIN (SELECT pid, cid FROM t_category_problem WHERE deleted = 0) cp ON p.id = cp.pid
+            LEFT JOIN (SELECT subtype, type, id FROM t_category WHERE deleted = 0)c ON cp.cid = c.id
+            WHERE p.deleted = 0
+            <if test="map.problemType!=null and map.problemType!=2">
+                AND p.problem_type = #{map.problemType}
+            </if>
+            <if test="map.description!=null and map.description!=''">
+                AND p.description LIKE CONCAT('%', #{map.description}, '%')
+            </if>
+            GROUP BY p.id
+            ORDER BY p.id
         </if>
     </select>
 

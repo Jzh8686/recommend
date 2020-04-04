@@ -91,6 +91,34 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <!--开发-->
+            <id>dev</id>
+            <activation>
+                <!--默认开发环境-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+        </profile>
+        <profile>
+            <!--生产-->
+            <id>prod</id>
+            <properties>
+                <activatedProperties>prod</activatedProperties>
+            </properties>
+        </profile>
+        <profile>
+            <!--生产-->
+            <id>test</id>
+            <properties>
+                <activatedProperties>test</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
+
     <repositories>
         <repository>
             <id>alimaven</id>

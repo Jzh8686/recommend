@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gyj.gx.base.exception.BusinessException;
+import com.gyj.gx.base.page.MyPage;
 import com.gyj.gx.base.page.PageModule;
 import com.gyj.gx.base.returns.RespCode;
 import com.gyj.gx.base.util.PageUtil;
@@ -38,9 +39,33 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, ProblemEntity
 
     @Override
     public PageModule<ProblemDTO> getPageList(PageModule pageModule, ProblemVO problemVO) {
-        Page page = new Page(pageModule.getPageNum(),pageModule.getPageSize());
-        IPage<ProblemDTO> page1 = baseMapper.selectPageVO(page,problemVO);
-        PageModule<ProblemDTO> pm = PageUtil.transToPageModule(page1);
+//        Page page = new Page(pageModule.getPageNum(),pageModule.getPageSize());
+//        IPage<ProblemDTO> page1 = baseMapper.selectPageVO(page,problemVO);
+//        PageModule<ProblemDTO> pm = PageUtil.transToPageModule(page1);
+        Integer pageNum = pageModule.getPageNum();
+        Integer pageSize = pageModule.getPageSize();
+
+        Integer totalCount = baseMapper.getTotalSearchCount(problemVO);
+
+        PageModule<ProblemDTO> pm = new PageModule<>();
+        pm.setPageSize(pageSize);
+        pm.setPageNum(pageNum);
+        pm.setTotalCount(totalCount);
+
+        int pages = (int) Math.ceil(totalCount*1.0/pageSize);
+        pm.setTotalPage(pages);
+        pm.setIsMore(pages-pageNum);
+
+        List<Integer> groupCount = baseMapper.getGroupCount(problemVO);
+
+        int skipNumber = groupCount.subList(0,Math.min((pageNum-1)*pageSize,groupCount.size())).stream().mapToInt(Integer::intValue).sum();
+        int newPageSize = groupCount.subList((pageNum-1)*pageSize,Math.min(pageNum*pageSize,groupCount.size())).stream().mapToInt(Integer::intValue).sum();
+
+        MyPage myPage = new MyPage();
+        myPage.setPageSize(newPageSize);
+        myPage.setSkipNumber(skipNumber);
+
+        pm.setItems(baseMapper.selectPageVO(myPage,problemVO));
 
         return pm;
     }
