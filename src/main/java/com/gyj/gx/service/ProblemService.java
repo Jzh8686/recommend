@@ -11,4 +11,5 @@ public interface ProblemService extends IService<ProblemEntity> {
     boolean deleteProblem(ProblemVO problemVO);
     boolean saveProblem(ProblemVO problemVO);
     ProblemDTO problemDetail(ProblemVO problemVO);
+    boolean editProblem(ProblemVO problemVO);
 }

@@ -57,5 +57,15 @@ public class ProblemController extends BaseController{
     public RespEntity problemDetail(ProblemVO problemVO){
         return new RespEntity(RespCode.SUCCESS, problemService.problemDetail(problemVO));
     }
-
+    /**
+     * 修改问题
+     * 如果题目未被选入试卷，可以修改
+     * 如果题目被选入，不能修改
+     * @param problemVO
+     * @return
+     */
+    @PostMapping("update")
+    public RespEntity editProblem(@RequestBody ProblemVO problemVO){
+        return  new RespEntity(RespCode.SUCCESS,problemService.editProblem(problemVO));
+    }
 }

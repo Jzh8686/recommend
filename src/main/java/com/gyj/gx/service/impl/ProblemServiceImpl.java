@@ -108,4 +108,53 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, ProblemEntity
 
         return problemDTO;
     }
+
+    @Override
+    public boolean editProblem(ProblemVO problemVO) {
+        ValidatorBeanFactory .validate(problemVO, FirstValidator.class);
+
+        if(baseMapper.getRelevantPaperCount(problemVO)!=0)
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"不能删除被选入试卷的题目");
+
+        ValidatorBeanFactory.validate(problemVO, SecondValidator.class);
+
+        ProblemEntity problemExist = getOne(
+              new QueryWrapper<ProblemEntity>().lambda()
+                .eq(ProblemEntity::getId,problemVO.getId())
+        );
+        if(problemExist==null){
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"问题不存在");
+        }
+
+        if (StringUtils.isNotBlank(problemVO.getOptionA())&& problemVO.getOptionA().length()>100)
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"选项长度超过限制");
+        if (StringUtils.isNotBlank(problemVO.getOptionB())&& problemVO.getOptionB().length()>100)
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"选项长度超过限制");
+        if (StringUtils.isNotBlank(problemVO.getOptionC())&& problemVO.getOptionC().length()>100)
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"选项长度超过限制");
+        if (StringUtils.isNotBlank(problemVO.getOptionD())&& problemVO.getOptionD().length()>100)
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"选项长度超过限制");
+
+        ProblemEntity problemEntity = new ProblemEntity();
+        BeanUtils.copyProperties(problemVO,problemEntity);
+
+        //保存对象
+        updateById(problemEntity);
+
+        categoryProblemService.remove(
+                new QueryWrapper<CategoryProblemEntity>().lambda()
+                        .eq(CategoryProblemEntity::getPid,problemVO.getId())
+        );
+
+        List<CategoryProblemEntity> cidList = new ArrayList<>();
+        for(Integer cid:problemVO.getCategories()){
+            CategoryProblemEntity categoryProblemEntity = new CategoryProblemEntity();
+            categoryProblemEntity.setCid(cid);
+            categoryProblemEntity.setPid(problemEntity.getId());
+            cidList.add(categoryProblemEntity);
+        }
+        categoryProblemService.saveBatch(cidList);
+
+        return true;
+    }
 }
