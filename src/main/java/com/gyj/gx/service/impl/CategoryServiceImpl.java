@@ -17,6 +17,7 @@ import com.gyj.gx.base.util.validator.ValidatorBeanFactory;
 import com.gyj.gx.dao.CategoryMapper;
 import com.gyj.gx.domain.CategoryEntity;
 import com.gyj.gx.domain.request.CategoryVO;
+import com.gyj.gx.domain.request.ProblemVO;
 import com.gyj.gx.domain.response.CategoryDTO;
 import com.gyj.gx.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -88,5 +89,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
             throw new BusinessException(RespCode.CUSTOM_ERROR,"不能删除已有题目的分类");
 
         return removeById(categoryVO.getId());
+    }
+
+    @Override
+    public List<CategoryDTO> categoriesRelatedToProblem(ProblemVO problemVO) {
+        return baseMapper.categoriesRelatedToProblem(problemVO);
     }
 }

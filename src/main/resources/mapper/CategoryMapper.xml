@@ -29,6 +29,15 @@
         SELECT COUNT(*)
         FROM t_category_problem
         WHERE cid = #{map.id}
+        AND deleted = 0
+    </select>
+
+    <select id="categoriesRelatedToProblem" resultMap="pageMap">
+        SELECT c.id, c.type, c.subtype
+        FROM t_category_problem cp
+                 LEFT JOIN (SELECT id, type, subtype FROM t_category WHERE deleted = 0)c ON cp.cid = c.id
+        WHERE cp.deleted = 0
+          AND cp.pid = #{map.id}
     </select>
 
 </mapper>

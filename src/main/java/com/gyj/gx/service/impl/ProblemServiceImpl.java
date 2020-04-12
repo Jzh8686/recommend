@@ -1,24 +1,23 @@
 package com.gyj.gx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gyj.gx.base.exception.BusinessException;
 import com.gyj.gx.base.page.MyPage;
 import com.gyj.gx.base.page.PageModule;
 import com.gyj.gx.base.returns.RespCode;
-import com.gyj.gx.base.util.PageUtil;
 import com.gyj.gx.base.util.validator.FirstValidator;
 import com.gyj.gx.base.util.validator.SecondValidator;
 import com.gyj.gx.base.util.validator.ValidatorBeanFactory;
 import com.gyj.gx.dao.ProblemMapper;
 import com.gyj.gx.domain.CategoryProblemEntity;
 import com.gyj.gx.domain.ProblemEntity;
+import com.gyj.gx.domain.request.PaperVO;
 import com.gyj.gx.domain.request.ProblemVO;
 import com.gyj.gx.domain.response.ProblemDTO;
 import com.gyj.gx.service.CategoryProblemService;
+import com.gyj.gx.service.CategoryService;
 import com.gyj.gx.service.ProblemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +34,9 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, ProblemEntity
 
     @Autowired
     private CategoryProblemService categoryProblemService;
+
+    @Autowired
+    private CategoryService categoryService;
 
 
     @Override
@@ -130,6 +132,8 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, ProblemEntity
 
         ProblemDTO problemDTO=new ProblemDTO();
         BeanUtils.copyProperties(problem,problemDTO);
+
+        problemDTO.setCategories(categoryService.categoriesRelatedToProblem(problemVO));
 
         return problemDTO;
     }

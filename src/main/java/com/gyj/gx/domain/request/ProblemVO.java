@@ -3,6 +3,7 @@ package com.gyj.gx.domain.request;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.gyj.gx.base.util.validator.FirstValidator;
 import com.gyj.gx.base.util.validator.SecondValidator;
+import com.gyj.gx.base.util.validator.ThirdValidator;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 public class ProblemVO {
 
-    @NotNull(message = "id不能为空",groups = {FirstValidator.class})
+    @NotNull(message = "id不能为空",groups = {FirstValidator.class,ThirdValidator.class})
     private Integer id;
 
     @NotNull(message = "题型必须选择",groups = {SecondValidator.class})
@@ -35,14 +36,15 @@ public class ProblemVO {
     @Length(min=1,max=500,message = "答案长度超过限制",groups = {SecondValidator.class})
     private String answer; //参考答案
 
-    @Length(min=1,max=500,message = "答案长度超过限制",groups = {SecondValidator.class})
+    @Length(min=1,max=500,message = "解析长度超过限制",groups = {SecondValidator.class})
     private String explanation;//解析
 
     @NotNull(message = "分类必须选择",groups = {SecondValidator.class})
     private List<Integer> categories;//二级分类
 
     private Integer cid;
-
+    @NotNull(message = "分值必须选择",groups = {ThirdValidator.class})
+    private Double point;
     @TableLogic
     private Integer deleted;// 逻辑删除 0 未删除 1 已删除
 }

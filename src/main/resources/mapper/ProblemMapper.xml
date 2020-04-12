@@ -22,7 +22,7 @@
             LEFT JOIN (SELECT id, subtype FROM t_category WHERE deleted = 0)c ON cpp.cid = c.id
             WHERE cp.deleted = 0
             AND cp.cid = #{map.cid}
-            <if test="map.problemType!=null and map.problemType!=2">
+            <if test="map.problvcemType!=null and map.problemType!=2">
                 AND p.problem_type = #{map.problemType}
             </if>
             <if test="map.description!=null and map.description!=''">
