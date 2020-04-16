@@ -1,7 +1,6 @@
 package com.gyj.gx.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gyj.gx.domain.PaperEntity;
 import com.gyj.gx.domain.request.PaperVO;
 import com.gyj.gx.domain.response.ProblemDTO;

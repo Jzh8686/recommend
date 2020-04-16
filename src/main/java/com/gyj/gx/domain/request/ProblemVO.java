@@ -43,6 +43,7 @@ public class ProblemVO {
     private List<Integer> categories;//二级分类
 
     private Integer cid;
+
     @NotNull(message = "分值必须选择",groups = {ThirdValidator.class})
     private Double point;
     @TableLogic

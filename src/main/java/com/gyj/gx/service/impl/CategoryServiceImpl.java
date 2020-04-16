@@ -61,7 +61,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
                 .eq(CategoryEntity::getSubtype,categoryVO.getSubtype())
         );
         if(duplicate!=null)
-            throw new BusinessException(RespCode.CUSTOM_ERROR,"存在重复的分类名");
+            throw new BusinessException(RespCode.CUSTOM_ERROR,"分类名重复");
 
         //只取需要的字段
         CategoryEntity categoryEntity = new CategoryEntity();
