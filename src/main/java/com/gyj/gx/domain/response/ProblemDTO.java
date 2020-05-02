@@ -1,6 +1,5 @@
 package com.gyj.gx.domain.response;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
 import java.util.List;
@@ -30,6 +29,8 @@ public class ProblemDTO {
     private String answer; //参考答案
 
     private String explanation;//解析
+
+    private Double point;
 
     private List<CategoryDTO> categories;//分类列表
 

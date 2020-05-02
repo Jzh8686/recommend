@@ -11,7 +11,7 @@ import java.util.List;
 public interface PaperService extends IService<PaperEntity> {
     boolean savePaper(PaperVO paperVO);
     PaperDTO paperDetail(PaperVO paperVO);
-    PageModule<PaperDTO> getPageList(PageModule pageModule,PaperVO paperVO);
+    PageModule<PaperDTO> getPageList(PageModule pageModule,PaperVO paperVO);//带分页试卷列表
     boolean deletePaper(PaperVO paperVO);
     List<PaperDTO> getList();
 }

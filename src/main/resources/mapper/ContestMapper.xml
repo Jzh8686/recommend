@@ -2,5 +2,91 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gyj.gx.dao.ContestMapper">
+    <resultMap id="pageMap" type="com.gyj.gx.domain.response.ReviewDTO">
+        <id column="cid" property="cid"/>
+        <result column="contest_name" property="contestName"/>
+        <collection property="problemsDTO" ofType="com.gyj.gx.domain.response.ProblemsDTO" javaType="ArrayList">
+            <id column="pid" property="pid"/>
+            <result column="description" property="description"/>
+            <result column="point" property="point"/>
+            <result column="answer" property="answer"/>
+            <collection property="userAnswerDTO" ofType="com.gyj.gx.domain.response.UserAnswerDTO" javaType="ArrayList">
+                <id column="rid" property="rid"/>
+                <result column="uid" property="uid"/>
+                <result column="ans" property="ans"/>
+                <result column="correct" property="correct"/>
+                <result column="score" property="score"/>
+            </collection>
+        </collection>
+    </resultMap>
 
+    <resultMap id="reviewPageMap" type="com.gyj.gx.domain.response.ReviewPageDTO">
+        <id column="cid" property="cid"/>
+        <result column="contest_name" property="contestName"/>
+        <result column="total_review" property="totalReview"/>
+        <result column="to_be_reviewed" property="toBeReviewed"/>
+    </resultMap>
+
+    <resultMap id="pointMap" type="com.gyj.gx.domain.response.ResultDTO">
+        <id column="pid" property="pid"/>
+        <result column="answer" property="answer"/>
+        <result column="correct" property="correct"/>
+        <result column="point" property="point"/>
+    </resultMap>
+    <resultMap id="statisticMap" type="com.gyj.gx.domain.response.StatisticDTO">
+        <id column="pid" property="pid"/>
+        <result column="option_a" property="aNum"/>
+        <result column="option_b" property="bNum"/>
+        <result column="option_c" property="cNum"/>
+        <result column="option_d" property="dNum"/>
+    </resultMap>
+
+
+    <select id="getReviewContest" resultMap="pageMap">
+        SELECT c.id      as cid,
+               c.contest_name,
+               p.id      as pid,
+               p.description,
+               pp.point,
+               pp.answer,
+               uc.uid,
+               uc.id     as rid,
+               uc.answer as ans,
+               uc.correct,
+               uc.point  as score
+        FROM t_contest c
+                 LEFT JOIN (SELECT pbid, ppid, point, answer FROM t_problem_paper)pp ON c.paper = pp.ppid
+                 LEFT JOIN (SELECT id, description FROM t_problem)p ON p.id = pp.pbid
+                 LEFT JOIN (SELECT id, cid, uid, correct, answer, point,pid FROM t_user_contest WHERE correct=-1)uc
+                     ON c.id = uc.cid AND uc.pid=p.id
+        WHERE c.deleted = 0
+          AND uc.correct = -1
+          AND c.id = #{map.cid}
+    </select>
+
+    <select id="selectReviewList" resultMap="reviewPageMap">
+        SELECT cid, contest_name, COUNT(*) AS total_review, SUM(IF(correct = -1, 1, 0)) AS to_be_reviewed
+        FROM t_user_contest
+                 LEFT JOIN t_contest ON cid = t_contest.id
+        GROUP BY cid
+    </select>
+    <select id="getUserPoint" resultMap="pointMap">
+        SELECT pid ,answer,correct,point
+        FROM t_user_contest
+        WHERE uid=#{map.uid}
+          AND cid=#{map.cid}
+        order by pid ASC ;
+    </select>
+
+    <select id="getUserStatistic" resultMap="statisticMap">
+        SELECT pid,
+               SUM(IF(answer='A',1,0)) option_a,
+               SUM(IF(answer='B',1,0)) option_b,
+               SUM(IF(answer='C',1,0)) option_c,
+               SUM(IF(answer='D',1,0)) option_d
+        FROM t_user_contest
+        WHERE cid=#{map.cid}
+        GROUP BY pid
+        ORDER BY pid
+    </select>
 </mapper>

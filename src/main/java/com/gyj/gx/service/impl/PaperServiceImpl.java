@@ -16,6 +16,7 @@ import com.gyj.gx.base.util.validator.ValidatorBeanFactory;
 import com.gyj.gx.dao.PaperMapper;
 import com.gyj.gx.domain.ContestEntity;
 import com.gyj.gx.domain.PaperEntity;
+import com.gyj.gx.domain.ProblemEntity;
 import com.gyj.gx.domain.ProblemPaperEntity;
 import com.gyj.gx.domain.request.PaperVO;
 import com.gyj.gx.domain.request.ProblemVO;
@@ -23,6 +24,7 @@ import com.gyj.gx.domain.response.PaperDTO;
 import com.gyj.gx.service.ContestService;
 import com.gyj.gx.service.PaperService;
 import com.gyj.gx.service.ProblemPaperService;
+import com.gyj.gx.service.ProblemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +45,8 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, PaperEntity> impl
     private ProblemPaperService problemPaperService;
     @Autowired
     private ContestService contestService;
+    @Autowired
+    private ProblemService problemService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -60,15 +66,22 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, PaperEntity> impl
 
         save(paperEntity);
 
-        List<ProblemPaperEntity> problemList = new ArrayList<>();
+        List<Integer> problemList = new ArrayList<>();
+        Map<Integer,ProblemPaperEntity> map = new HashMap<>();
         for (ProblemVO problemVO : paperVO.getProblems()) {
             ProblemPaperEntity entity = new ProblemPaperEntity();
             entity.setPbid(problemVO.getId());
             entity.setPpid(paperEntity.getId());
             entity.setPoint(problemVO.getPoint());
-            problemList.add(entity);
+            problemList.add(problemVO.getId());
+            map.put(problemVO.getId(),entity);
         }
-        problemPaperService.saveBatch(problemList);
+        List<ProblemEntity> problemEntities = problemService.listByIds(problemList);
+        for(ProblemEntity problemEntity:problemEntities){
+            ProblemPaperEntity problemPaperEntity = map.get(problemEntity.getId());
+            problemPaperEntity.setAnswer(problemEntity.getAnswer());
+        }
+        problemPaperService.saveBatch(map.values());
 
         return true;
     }

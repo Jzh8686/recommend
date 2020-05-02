@@ -19,4 +19,6 @@ public class ContestDTO {
     private Date endTime;//结束时间
 
     private Integer state;//状态，0：未开始，1：进行中，2：已结束，等待批阅，3：已批阅
+
+    private Integer process;//阅卷进度
 }

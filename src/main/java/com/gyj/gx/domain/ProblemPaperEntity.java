@@ -17,6 +17,8 @@ public class ProblemPaperEntity {
     private Integer ppid;
 
     private Double point;
+
+    private String answer;
     @TableLogic
     private Integer deleted;// 逻辑删除 0 未删除 1 已删除
 }

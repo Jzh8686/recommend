@@ -2,6 +2,7 @@ package com.gyj.gx.domain.request;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.gyj.gx.base.util.validator.FirstValidator;
+import com.gyj.gx.base.util.validator.ForthValidator;
 import com.gyj.gx.base.util.validator.SecondValidator;
 import com.gyj.gx.base.util.validator.ThirdValidator;
 import lombok.Data;
@@ -14,10 +15,10 @@ import java.util.List;
 @Data
 public class ProblemVO {
 
-    @NotNull(message = "id不能为空",groups = {FirstValidator.class,ThirdValidator.class})
+    @NotNull(message = "id不能为空",groups = {FirstValidator.class,ThirdValidator.class,ForthValidator.class})
     private Integer id;
 
-    @NotNull(message = "题型必须选择",groups = {SecondValidator.class})
+    @NotNull(message = "题型必须选择",groups = {SecondValidator.class, ForthValidator.class})
     private Integer problemType;// 题型 0:客观题 1:主观题 2:全部
 
     @NotBlank(message = "题干不能为空",groups = {SecondValidator.class})
@@ -32,9 +33,9 @@ public class ProblemVO {
 
     private String optionD; //选项D
 
-    @NotBlank(message = "答案不能为空",groups = {SecondValidator.class})
-    @Length(min=1,max=500,message = "答案长度超过限制",groups = {SecondValidator.class})
-    private String answer; //参考答案
+    @NotBlank(message = "答案不能为空",groups = {SecondValidator.class,ForthValidator.class})
+    @Length(min=1,max=500,message = "答案长度超过限制",groups = {SecondValidator.class,ForthValidator.class})
+    private String answer; //参考答案或用户填写的答案
 
     @Length(min=1,max=500,message = "解析长度超过限制",groups = {SecondValidator.class})
     private String explanation;//解析

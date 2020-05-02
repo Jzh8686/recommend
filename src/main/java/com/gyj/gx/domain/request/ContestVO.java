@@ -5,6 +5,7 @@ import com.gyj.gx.base.util.validator.SecondValidator;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -13,7 +14,7 @@ public class ContestVO {
     @NotNull(message = "id不能为空",groups = {SecondValidator.class})
     private Integer id; //表主键ID
 
-    @NotNull(message = "竞赛名不能为空",groups = {FirstValidator.class})
+    @NotBlank(message = "竞赛名不能为空",groups = {FirstValidator.class})
     @Length(min=1,max=30,message = "竞赛名长度超过限制",groups = {FirstValidator.class})
     private String contestName;//竞赛名
 

@@ -1,15 +1,13 @@
 package com.gyj.gx.controller;
 
+import com.gyj.gx.base.page.PageModule;
 import com.gyj.gx.base.returns.RespCode;
 import com.gyj.gx.base.returns.RespEntity;
 import com.gyj.gx.domain.request.UserVO;
 import com.gyj.gx.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -27,5 +25,24 @@ public class UserController extends BaseController {
     @PostMapping("register")
     public RespEntity register(@RequestBody UserVO userVO) {
         return new RespEntity(RespCode.SUCCESS, userService.register(userVO));
+    }
+    /**
+     * 带分页用户列表
+     * @param pageModule
+     * @param userVO
+     * @return
+     */
+    @GetMapping("page")
+    public RespEntity getPageList(PageModule pageModule, UserVO userVO){
+        return new RespEntity(RespCode.SUCCESS, userService.getPageList(pageModule, userVO));
+    }
+    /**
+     * 管理员添加账号
+     * @param userVO
+     * @return
+     */
+    @PostMapping("admin")
+    public RespEntity adminRegister(@RequestBody UserVO userVO) {
+        return new RespEntity(RespCode.SUCCESS, userService.adminRegister(userVO));
     }
 }

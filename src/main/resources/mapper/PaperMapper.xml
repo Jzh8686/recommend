@@ -11,17 +11,17 @@
         <result column="option_b" property="optionB"/>
         <result column="option_c" property="optionC"/>
         <result column="option_d" property="optionD"/>
+        <result column="point" property="point"/>
     </resultMap>
-
     <select id="getProblemRelatedToPaper" resultMap="pageMap">
-        SELECT pb.id, pb.problem_type, pb.description, pb.option_a, pb.option_b, pb.option_c, pb.option_d
+        SELECT pb.id, pb.problem_type, pb.description, pb.option_a, pb.option_b, pb.option_c, pb.option_d,pp.point
         FROM t_problem_paper pp
                  LEFT JOIN (SELECT id, problem_type, description, option_a, option_b, option_c, option_d
                             FROM t_problem
                             WHERE deleted = 0) pb ON pp.pbid = pb.id
         WHERE pp.deleted = 0
           AND pp.ppid=#{map.id}
-        ORDER BY pp.id
+        ORDER BY pb.id ASC
     </select>
 
 </mapper>

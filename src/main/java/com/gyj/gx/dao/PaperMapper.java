@@ -14,5 +14,4 @@ import java.util.List;
 public interface PaperMapper extends BaseMapper<PaperEntity> {
     List<ProblemDTO> getProblemRelatedToPaper(@Param("map") PaperVO paperVO);//试卷题目列表
 
-
 }
