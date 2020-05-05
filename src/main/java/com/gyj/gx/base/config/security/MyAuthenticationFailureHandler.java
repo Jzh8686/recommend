@@ -3,6 +3,8 @@ package com.gyj.gx.base.config.security;
 import com.alibaba.fastjson.JSON;
 import com.gyj.gx.base.returns.RespCode;
 import com.gyj.gx.base.returns.RespEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -18,7 +20,14 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                         AuthenticationException e) throws IOException, ServletException {
 
-        RespEntity respEntity = new RespEntity(RespCode.PASSWORD_INCORRECT);
+        RespEntity respEntity;
+        if (e instanceof BadCredentialsException) {
+            respEntity = new RespEntity(RespCode.PASSWORD_INCORRECT);
+        }else if (e instanceof LockedException){
+            respEntity = new RespEntity(RespCode.CUSTOM_ERROR.getCode(),"账号被冻结");
+        }else {
+            respEntity = new RespEntity(RespCode.PASSWORD_INCORRECT);
+        }
 
 //        httpServletResponse.setCharacterEncoding("UTF-8");
 

@@ -14,5 +14,9 @@ public class UserDTO {
 
     private String role;//角色
 
+    private Integer state;//状态 0：激活 1：冻结
+
+    private String avatar;//头像
+
 
 }

@@ -15,5 +15,7 @@ public interface UserService extends IService<UserEntity> {
 
     PageModule<UserDTO> getPageList(PageModule pageModule, UserVO userVO);
 
-    boolean adminRegister(UserVO userVO);
+    boolean updateRole(UserVO userVO);
+
+    boolean alterState(UserVO userVO);
 }

@@ -20,6 +20,7 @@ import com.gyj.gx.domain.UserContestEntity;
 import com.gyj.gx.domain.request.*;
 import com.gyj.gx.domain.response.*;
 import com.gyj.gx.service.ContestService;
+import com.gyj.gx.service.LikeService;
 import com.gyj.gx.service.ProblemPaperService;
 import com.gyj.gx.service.UserContestService;
 import lombok.extern.slf4j.Slf4j;

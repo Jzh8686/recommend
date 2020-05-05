@@ -5,6 +5,7 @@ import com.gyj.gx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -34,11 +35,12 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         UserEntity userEntity = userService.getUserByUsername(username);
         if (userEntity == null)
             throw new BadCredentialsException("用户名或密码错误");
-//        password = bCryptPasswordEncoder.encode(password);
+        if(userEntity.getState()==1)
+            throw new LockedException("该账号已被冻结");
         if (!bCryptPasswordEncoder.matches(password,userEntity.getPassword()))
             throw new BadCredentialsException("用户名或密码错误");
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String role : userEntity.getRole().split("|")) {
+        for (String role : userEntity.getRole().split("[|]")) {
             authorities.add(new SimpleGrantedAuthority(role));
         }
 

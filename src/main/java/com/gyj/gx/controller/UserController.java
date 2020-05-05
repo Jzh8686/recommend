@@ -41,8 +41,17 @@ public class UserController extends BaseController {
      * @param userVO
      * @return
      */
-    @PostMapping("admin")
-    public RespEntity adminRegister(@RequestBody UserVO userVO) {
-        return new RespEntity(RespCode.SUCCESS, userService.adminRegister(userVO));
+    @PostMapping("role")
+    public RespEntity updateRole(@RequestBody UserVO userVO) {
+        return new RespEntity(RespCode.SUCCESS, userService.updateRole(userVO));
+    }
+    /**
+     * 修改状态
+     * @param userVO
+     * @return
+     */
+    @PostMapping("state")
+    public RespEntity alterState(@RequestBody UserVO userVO) {
+        return new RespEntity(RespCode.SUCCESS, userService.alterState(userVO));
     }
 }
