@@ -20,4 +20,11 @@ public interface ContestService extends IService<ContestEntity> {
 
     List<ResultDTO> getUserPoint(ResultVO resultVO);//获取得分结果
     List<StatisticDTO> getUserStatistic(StatisticVO statisticVO);//获取统计数据
+
+    void addContestSchedules();
+
+    void startContest(ContestVO contestVO);
+
+    void endContest(ContestVO contestVO);
+
 }

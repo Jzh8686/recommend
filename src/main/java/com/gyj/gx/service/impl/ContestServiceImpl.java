@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gyj.gx.base.config.scheduling.CronTaskRegistrar;
 import com.gyj.gx.base.exception.BusinessException;
 import com.gyj.gx.base.page.PageModule;
 import com.gyj.gx.base.returns.RespCode;
+import com.gyj.gx.base.util.CronUtils;
 import com.gyj.gx.base.util.PageUtil;
 import com.gyj.gx.base.util.validator.FirstValidator;
 import com.gyj.gx.base.util.validator.ForthValidator;
@@ -29,10 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +43,9 @@ public class ContestServiceImpl extends ServiceImpl<ContestMapper, ContestEntity
 
     @Autowired
     private UserContestService userContestService;
+
+    @Autowired
+    private CronTaskRegistrar cronTaskRegistrar;
 
     @Override
     public boolean saveContest(ContestVO contestVO) {
@@ -56,7 +59,14 @@ public class ContestServiceImpl extends ServiceImpl<ContestMapper, ContestEntity
             throw new BusinessException(RespCode.CUSTOM_ERROR, "竞赛名重复");
         ContestEntity contestEntity = new ContestEntity();
         BeanUtils.copyProperties(contestVO, contestEntity);
-        return save(contestEntity);
+        boolean success = save(contestEntity);
+        if (success){
+            cronTaskRegistrar.addCronTask(() -> startContest(new ContestVO(){{setId(contestEntity.getId());}}),
+                    CronUtils.getCron(contestEntity.getStartTime()));
+            cronTaskRegistrar.addCronTask(() -> endContest(new ContestVO(){{setId(contestEntity.getId());}}),
+                    CronUtils.getCron(contestEntity.getEndTime()));
+        }
+        return success;
     }
 
     @Override
@@ -177,6 +187,17 @@ public class ContestServiceImpl extends ServiceImpl<ContestMapper, ContestEntity
         uce.setId(reviewVO.getRid());
         uce.setCorrect(reviewVO.getPoint().equals(ppe.getPoint()) ?1:0);
         uce.setPoint(reviewVO.getPoint());
+        int cnt = userContestService.count(
+                new QueryWrapper<UserContestEntity>().lambda()
+                .eq(UserContestEntity::getCid,reviewVO.getCid())
+                .eq(UserContestEntity::getCorrect,-1)
+        );
+        if (cnt==1){
+            ContestEntity toBeUpdated = new ContestEntity();
+            toBeUpdated.setId(ce.getId());
+            toBeUpdated.setState(3);
+            updateById(toBeUpdated);
+        }
         return userContestService.updateById(uce);
     }
 
@@ -195,5 +216,67 @@ public class ContestServiceImpl extends ServiceImpl<ContestMapper, ContestEntity
     public List<StatisticDTO> getUserStatistic(StatisticVO statisticVO) {
         ValidatorBeanFactory.validate(statisticVO,ForthValidator.class);
         return baseMapper.getUserStatistic(statisticVO);
+    }
+
+    @Override
+    public void addContestSchedules() {
+        List<ContestEntity> contestEntities = list();
+        for (ContestEntity contest:contestEntities){
+            switch (contest.getState()){
+                case 0:{
+                    if (contest.getEndTime().before(new Date())){
+                        ContestEntity toBeUpdated = new ContestEntity();
+                        toBeUpdated.setId(contest.getId());
+                        toBeUpdated.setState(3);
+                        updateById(toBeUpdated);
+                    }else if (contest.getStartTime().after(new Date())){
+                        cronTaskRegistrar.addCronTask(() -> startContest(new ContestVO(){{setId(contest.getId());}}),
+                                CronUtils.getCron(contest.getStartTime()));
+                        cronTaskRegistrar.addCronTask(() -> endContest(new ContestVO(){{setId(contest.getId());}}),
+                                CronUtils.getCron(contest.getEndTime()));
+                    }else {
+                        ContestEntity toBeUpdated = new ContestEntity();
+                        toBeUpdated.setId(contest.getId());
+                        toBeUpdated.setState(1);
+                        updateById(toBeUpdated);
+                        cronTaskRegistrar.addCronTask(() -> endContest(new ContestVO(){{setId(contest.getId());}}),
+                                CronUtils.getCron(contest.getEndTime()));
+                    }
+                    break;
+                }
+                case 1:{
+                    if (contest.getEndTime().before(new Date())){
+                        ContestEntity toBeUpdated = new ContestEntity();
+                        toBeUpdated.setId(contest.getId());
+                        toBeUpdated.setState(2);
+                        updateById(toBeUpdated);
+                    }else {
+                        // 进行中
+                        cronTaskRegistrar.addCronTask(() -> endContest(new ContestVO(){{setId(contest.getId());}}),
+                                CronUtils.getCron(contest.getEndTime()));
+                    }
+                    break;
+                }
+                default:{
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void startContest(ContestVO contestVO) {
+        ContestEntity toBeUpdated = new ContestEntity();
+        toBeUpdated.setId(contestVO.getId());
+        toBeUpdated.setState(1);
+        updateById(toBeUpdated);
+    }
+
+    @Override
+    public void endContest(ContestVO contestVO) {
+        ContestEntity toBeUpdated = new ContestEntity();
+        toBeUpdated.setId(contestVO.getId());
+        toBeUpdated.setState(2);
+        updateById(toBeUpdated);
     }
 }
