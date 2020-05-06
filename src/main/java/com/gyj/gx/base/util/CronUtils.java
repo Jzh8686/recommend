@@ -7,7 +7,7 @@ import java.util.Objects;
 public class CronUtils {
 
     //"ss mm HH dd MM ? yyyy"
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("ss mm HH dd MM yyyy");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("ss mm HH dd MM ?");
 
     /***
      *  功能描述：日期转换cron表达式

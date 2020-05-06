@@ -68,6 +68,7 @@
         SELECT cid, contest_name, COUNT(*) AS total_review, SUM(IF(correct = -1, 1, 0)) AS to_be_reviewed
         FROM t_user_contest
                  LEFT JOIN t_contest ON cid = t_contest.id
+        WHERE t_contest.state=2
         GROUP BY cid
     </select>
     <select id="getUserPoint" resultMap="pointMap">
