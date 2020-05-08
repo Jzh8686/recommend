@@ -12,6 +12,8 @@ public class UserEntity {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;// 表主键ID
 
+    private Long userId;
+
     private String username;//用户名
 
     private String password;//密码
@@ -25,7 +27,7 @@ public class UserEntity {
     private Integer state;//状态 0：激活 1：冻结
 
     private String avatar;//头像
-
+    private Integer init;
     @TableLogic
     private Integer deleted;// 逻辑删除 0 未删除 1 已删除
 

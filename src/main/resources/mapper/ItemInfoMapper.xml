@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gyj.gx.dao.ItemInfoMapper">
+    <resultMap id="BaseResultMap" type="com.gyj.gx.domain.ItemInfoEntity" >
+        <result column="item_id" property="itemId" />
+        <result column="movice_name" property="moviceName" />
+        <result column="release_date" property="releaseDate" />
+        <result column="url" property="url" />
+        <result column="cover" property="cover" />
+    </resultMap>
+    <select id="getLatestItem" resultMap="BaseResultMap">
+        select * from iteminfo order by release_date desc  limit 5
+    </select>
+    <update id="updateCover">
+         update iteminfo set cover = #{cover} where item_id = #{itemId}
+    </update>
+    <select id="getItemByItemId" resultMap="BaseResultMap">
+        select * from iteminfo where item_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

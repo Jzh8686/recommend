@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gyj.gx.dao.UserDataMapper">
+    <resultMap id="baseMap" type="com.gyj.gx.dao.UserDataMapper" >
+        <result column="user_id" property="userId" />
+        <result column="item_id" property="itemId" />
+        <result column="preference" property="preference" />
+        <result column="timestamp_value" property="timestampValue" />
+    </resultMap>
+    <insert id="insertUserData">
+       insert userdata(userId, itemId, preference, timestampValue) VALUE (#{data.userId},#{data.itemId},#{data.preference},#{data.timestampValue})
+    </insert>
+    <select id="getUserData" resultMap="baseMap">
+        select userId,itemId,preference from userdata where userId=#{id}
+    </select>
+    <select id="getUserIdList" resultType="java.lang.Long">
+        select distinct user_id  from userdata
+    </select>
+</mapper>

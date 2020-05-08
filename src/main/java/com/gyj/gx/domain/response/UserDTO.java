@@ -10,6 +10,7 @@ public class UserDTO {
 
     private Integer sex;//性别
 
+    private Long userId;
     private String nickname;//昵称
 
     private String role;//角色

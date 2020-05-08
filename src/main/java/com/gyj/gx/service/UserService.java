@@ -7,6 +7,8 @@ import com.gyj.gx.domain.request.PaperVO;
 import com.gyj.gx.domain.request.UserVO;
 import com.gyj.gx.domain.response.UserDTO;
 
+import java.util.List;
+
 public interface UserService extends IService<UserEntity> {
 
     UserEntity getUserByUsername(String username);
@@ -18,4 +20,5 @@ public interface UserService extends IService<UserEntity> {
     boolean updateRole(UserVO userVO);
 
     boolean alterState(UserVO userVO);
+
 }

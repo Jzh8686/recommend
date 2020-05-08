@@ -1,0 +1,60 @@
+#baseInfo{
+   padding-left:10%;padding-right: 10%;
+    margin-bottom: 10px;
+}
+#extendedInfo{
+    padding-left:10%;padding-right: 10%;
+}
+.extendedInfoForm{
+    margin-left: 5%;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    text-align: right;
+    width: 12%;
+}
+.myUpdateFormModal{
+    border-radius: 16px;
+}
+.loginButton{
+    width: 100%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+.loginCloseButton{
+    width: 100%;
+    margin: 2px 2px 2px 2px;
+
+}
+.modalFooterStyle{
+    width: 100%;
+    margin: 2px -4px 2px 2px;
+}
+.loginFormFooter{
+    writing-mode:vertical-lr;
+}
+.updateForm{
+    font-size: small;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: right;
+    width: 20%;
+}
+.mySpaceBorder{
+    border: 1px solid #ccc;
+    padding:14px;
+    border-radius: 16px;
+    background-color: white;
+}
+#registerModalFooter{
+    display: none;
+}
+/*
+.mySpaceBackground{
+    background: url("../pics/mySpaceBackground.jpg"), no-repeat, repeat right bottom, left top;
+}*/
+#footer111{
+    left: 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
