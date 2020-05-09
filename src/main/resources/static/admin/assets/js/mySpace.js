@@ -268,15 +268,15 @@ function mySpaceInfo() {
     })
 }
 function  updatePassword() {
-    var originalPassword=$("#originalPassword").val();
     var newPassword=$("#newPassword").val();
-    var id=user.id;
-
-
-    $.ajax({url:baseUrl+"/changePassword",type:"POST",data:{originalPassword:originalPassword,newPassword:newPassword,id:id},success:function (result) {
+    user.password =newPassword;
+    var temp=user;
+    delete temp._links;
+    var i=JSON.stringify(temp);
+    $.ajax({url:baseUrl+"/user/changePassword",type:"POST",data:i,success:function (result) {
 
         alert("修改成功");
-        }})
+        },contentType:'application/json;charset=utf-8'})
 }
 function toRegister() {
     $("#confirmPassword").toggle();

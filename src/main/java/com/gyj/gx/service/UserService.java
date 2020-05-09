@@ -20,4 +20,5 @@ public interface UserService extends IService<UserEntity> {
     boolean updateAvatar(String avatar,Long userId);
     UserEntity getPeopleInfo(Long userId);
     UserEntity updateInfo(UserEntity userEntity);
+    UserEntity changePassword(UserEntity userEntity);
 }

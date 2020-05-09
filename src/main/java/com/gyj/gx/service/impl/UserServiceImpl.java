@@ -164,4 +164,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
          userMapper.update(userEntity,queryWrapper);
          return userEntity;
     }
+    public UserEntity changePassword(UserEntity userEntity){
+        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("user_id",userEntity.getUserId());
+        UserEntity userEntity1 = userMapper.selectOne(queryWrapper);
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        userEntity1.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
+        userEntity1.setInit(-1);
+        userMapper.update(userEntity1,queryWrapper);
+        return userEntity;
+    }
 }

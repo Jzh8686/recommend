@@ -9,14 +9,15 @@ function login() {
         contentType:"application/x-www-form-urlencoded",
         success: function (result) {
             var resCode = JSON.parse(result).code;
+            var mes = JSON.parse(result).message;
             var info = JSON.parse(result).data;
-            $.cookie("avatar",info.avatar);
-            $.cookie("userId",info.userId);
             if (resCode==200){
                 window.location.href = 'http://localhost:8091/admin/index.html';
+                $.cookie("avatar",info.avatar);
+                $.cookie("userId",info.userId);
                 console.log(result);
             }else {
-                alert(result.message);
+                alert(mes);
             }
         }
     })

@@ -58,6 +58,7 @@ function searchByName() {
                 var imgUrl = "assets/img/movice/"+temp.cover+".jpg";
                 var itemName = temp.moviceName;
                 var  releaseDate = temp.releaseDate.split(" ")[0];
+                var preference = temp.preference;
                 $("#searchItems").append("<div class=\"card col-2\" style=\"width: 18rem;margin-right: 1%;margin-left:1%;\">\n" +
                     "  <img src=" +imgUrl+
                     " class=\"card-img-top\" alt=\"...\">\n" +
@@ -161,6 +162,7 @@ function searchItemByYear(end,start) {
                 var imgUrl = "assets/img/movice/"+temp.cover+".jpg";
                 var itemName = temp.moviceName;
                 var  releaseDate = temp.releaseDate.split(" ")[0];
+                var preference = temp.preference;
                 $("#searchItems").append("<div class=\"card col-2\" style=\"width: 18rem;margin-right: 1%;margin-left:1%;\">\n" +
                     "  <img src=" +imgUrl+
                     " class=\"card-img-top\" alt=\"...\">\n" +
@@ -198,6 +200,7 @@ function search(pageIndex,size) {
                 var imgUrl = "assets/img/movice/"+temp.cover+".jpg";
                 var itemName = temp.moviceName;
                 var  releaseDate = temp.releaseDate.split(" ")[0];
+                var preference = temp.preference;
                 $("#searchItems").append("<div class=\"card col-2\" style=\"width: 18rem;margin-right: 1%;margin-left:1%;\">\n" +
                     "  <img src=" +imgUrl+
                     " class=\"card-img-top\" alt=\"...\">\n" +
@@ -235,6 +238,7 @@ function  searchName(pageIndex,size) {
                 var imgUrl = "assets/img/movice/"+temp.cover+".jpg";
                 var itemName = temp.moviceName;
                 var  releaseDate = temp.releaseDate.split(" ")[0];
+                var preference = temp.preference;
                 $("#searchItems").append("<div class=\"card col-2\" style=\"width: 18rem;margin-right: 1%;margin-left:1%;\">\n" +
                     "  <img src=" +imgUrl+
                     " class=\"card-img-top\" alt=\"...\">\n" +

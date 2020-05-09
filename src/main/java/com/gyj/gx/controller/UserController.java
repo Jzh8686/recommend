@@ -82,4 +82,8 @@ public class UserController extends BaseController {
     public RespEntity updateInfo(@RequestBody() UserEntity userEntity){
         return new RespEntity(RespCode.SUCCESS,userService.updateInfo(userEntity));
     }
+    @PostMapping("changePassword")
+    public RespEntity changePassword(@RequestBody() UserEntity userEntity){
+        return new RespEntity(RespCode.SUCCESS,userService.changePassword(userEntity));
+    }
 }
