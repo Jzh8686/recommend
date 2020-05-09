@@ -2,7 +2,6 @@ package com.gyj.gx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -142,5 +141,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         ue.setId(userEntity.getId());
         ue.setState(userVO.getState());
         return updateById(ue);
+    }
+    @Autowired
+    UserMapper userMapper;
+    @Override
+    public boolean updateAvatar(String avatar, Long userId) {
+        return userMapper.updateAvatar(avatar, userId);
+    }
+
+    @Override
+    public UserEntity getPeopleInfo(Long userId) {
+        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("user_id",userId);
+        return userMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public UserEntity updateInfo(UserEntity userEntity) {
+        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("user_id",userEntity.getUserId());
+        userMapper.selectOne(queryWrapper);
+         userMapper.update(userEntity,queryWrapper);
+         return userEntity;
     }
 }

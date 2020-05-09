@@ -4,22 +4,43 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gyj.gx.dao.ItemInfoMapper;
+import com.gyj.gx.dao.UserDataMapper;
 import com.gyj.gx.domain.ItemInfoEntity;
+import com.gyj.gx.domain.Recommend;
 import com.gyj.gx.domain.response.ItemInfoDTO;
+import com.gyj.gx.domain.response.MayLikeDTO;
 import com.gyj.gx.service.ItemInfoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
 public class ItemInfoServiceImpl extends ServiceImpl<ItemInfoMapper, ItemInfoEntity> implements ItemInfoService {
     @Autowired
     ItemInfoMapper itemInfoMapper;
-
-    public List<ItemInfoEntity> getLatestItem() {
-        return itemInfoMapper.getLatestItem();
+    @Autowired
+    UserDataMapper userDataMapper;
+    public List<MayLikeDTO> getLatestItem() {
+        List<ItemInfoEntity> latestItem = itemInfoMapper.getLatestItem();
+        List<MayLikeDTO> res = new ArrayList<>();
+        List<Long> itemList = latestItem.stream().map(ItemInfoEntity::getItemId).collect(Collectors.toList());
+        List<Recommend> avePreference = userDataMapper.getAvePreference(itemList);
+        Map<Long, Float> idToValueMap = avePreference.stream().collect(Collectors.toMap(Recommend::getItemId, Recommend::getPreference));
+        latestItem.forEach(x->{
+            MayLikeDTO mayLikeDTO = new MayLikeDTO();
+            BeanUtils.copyProperties(x,mayLikeDTO);
+            mayLikeDTO.setPreference(idToValueMap.get(x.getItemId()));
+            res.add(mayLikeDTO);
+        });
+        return res;
     }
 
     public void updateCover(String cover, Long userId) {

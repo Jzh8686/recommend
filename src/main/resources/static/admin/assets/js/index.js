@@ -27,6 +27,7 @@ function logout() {
     })
 }
 function getLatestItem() {
+    updateAvatar();
     youLike();
     $.ajax({
         url: baseUrl + "/item/latest",
@@ -39,6 +40,7 @@ function getLatestItem() {
                 var imgUrl = "assets/img/movice/"+temp.cover+".jpg";
                 var itemName = temp.moviceName;
                 var  releaseDate = temp.releaseDate.split(" ")[0];
+                var preference = temp.preference;
                 $("#latestItem").append("<div class=\"card col-2\" style=\"width: 18rem;margin-right: 1%;margin-left:1%;\">\n" +
                     "  <img src=" +imgUrl+
                     " class=\"card-img-top\" alt=\"...\">\n" +
@@ -47,7 +49,7 @@ function getLatestItem() {
                     "</span>\n" +
                     "    <span style=\"float: right\" class=\"card-title\">" +releaseDate+
                     "</span></div>\n"+
-                    "    <button onclick='showLatestRating(this)' class=\"btn btn-primary\">详情</button>\n" +
+                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button></div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>评分：</span><span>" + preference.toFixed(2)+
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
                     "  </div>\n" +
@@ -64,9 +66,10 @@ function youLike() {
             console.log(result);
             mayLikeItemList = result.data;
             for (var i = 0; i < latestItemList.length; i++) {
-                var temp = mayLikeItemList  [i];
+                var temp = mayLikeItemList[i];
                 var imgUrl = "assets/img/movice/"+temp.cover+".jpg";
                 var itemName = temp.moviceName;
+                var preference = temp.preference;
                 var  releaseDate = temp.releaseDate.split(" ")[0];
                 $("#mayLike").append("<div class=\"card col-2\" style=\"width: 18rem;margin-right: 1%;margin-left:1%;\">\n" +
                     "  <img src=" +imgUrl+
@@ -76,7 +79,8 @@ function youLike() {
                     "</span>\n" +
                     "    <span style=\"float: right\" class=\"card-title\">" +releaseDate+
                     "</span></div>\n"+
-                    "    <button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>\n" +
+                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button></div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
+                    "</span></div></div>\n" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
                     "  </div>\n" +
@@ -107,7 +111,7 @@ function showYouLikeRating(btn) {
         "</span></h3>\n" +
         "                                <h3>IMBD链接:<span>" +url+
         "</span></h3>\n" +
-        "                                <div id=\"rating\">\n" +
+        "                                <div id=\"preference\">\n" +
         "                            </div>\n" +
         "                        </div>\n" +
         "                    </div>",
@@ -115,7 +119,7 @@ function showYouLikeRating(btn) {
     });
     //渲染
     var ins1 = rate.render({
-        elem: '#rating',
+        elem: '#preference',
         half:true,
         choose:function (value) {
             setPreference(itemEntity,value)
@@ -144,7 +148,7 @@ function showLatestRating(btn) {
         "</span></h3>\n" +
         "                                <h3>IMBD链接:<span>" +url+
         "</span></h3>\n" +
-        "                                <div id=\"rating\">\n" +
+        "                                <div id=\"preference\">\n" +
         "                            </div>\n" +
         "                        </div>\n" +
         "                    </div>",
@@ -152,7 +156,7 @@ function showLatestRating(btn) {
     });
     //渲染
     var ins1 = rate.render({
-        elem: '#rating',
+        elem: '#preference',
         half:true,
         choose:function (value) {
             setPreference(itemEntity,value)
@@ -168,7 +172,7 @@ function setPreference(itemEntity,value) {
     var itemId = itemEntity.itemId;
     console.log(itemId);
     $.ajax({
-        url: baseUrl + "/item/rating",
+        url: baseUrl + "/item/preference",
         type: "POST",
         data:{userId:userId,itemId:itemId,preference:value},
         success: function (result) {
@@ -176,4 +180,8 @@ function setPreference(itemEntity,value) {
                 alert("评分成功");
         }
     })
+}
+function updateAvatar() {
+    $("#avatar").attr("src", "assets/img/avatar/" + $.cookie('avatar'));
+    $("#userIdName").html("用户"+$.cookie('userId'));
 }

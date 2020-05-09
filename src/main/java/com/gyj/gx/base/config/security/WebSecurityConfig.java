@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/index.html","/admin/all.html").authenticated()
+                .antMatchers("/admin/index.html","/admin/all.html","/admin/myspace.html").authenticated()
                 .antMatchers("/admin/**").permitAll()
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/category/*").authenticated()

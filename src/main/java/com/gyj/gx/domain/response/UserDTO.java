@@ -8,7 +8,7 @@ public class UserDTO {
 
     private String username;//用户名
 
-    private Integer sex;//性别
+    private String sex;//性别
 
     private Long userId;
     private String nickname;//昵称

@@ -6,11 +6,11 @@ import lombok.Data;
 public class Recommend {
 
     private Long itemId;
-    private Float rating;
+    private Float preference;
 
 
     public Recommend(Long itemId, Float rating) {
         this.itemId = itemId;
-        this.rating = rating;
+        this.preference = rating;
     }
 }

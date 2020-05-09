@@ -18,7 +18,7 @@ public class UserEntity {
 
     private String password;//密码
 
-    private Integer sex;//性别 0:未知 1：男 2：女
+    private String sex;//性别 0:未知 1：男 2：女
 
     private String nickname;//昵称
 
@@ -28,6 +28,12 @@ public class UserEntity {
 
     private String avatar;//头像
     private Integer init;
+    private String email;
+    private String prompt;
+    private String location;
+    private Integer age;
+    private String tel;
+    private String realname;
     @TableLogic
     private Integer deleted;// 逻辑删除 0 未删除 1 已删除
 

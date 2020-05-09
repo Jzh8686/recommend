@@ -25,6 +25,7 @@ function logout() {
     })
 }
 function searchByName() {
+    updateAvatar();
     var moviceName = $("#searchInput").val();
     var pageIndex = 0;
     var size = 10;
@@ -95,7 +96,7 @@ function showAllRating(btn) {
         "</span></h3>\n" +
         "                                <h3>IMBD链接: <span>" +url+
         "</span></h3>\n" +
-        "                                <div id=\"rating\">\n" +
+        "                                <div id=\"preference\">\n" +
         "                            </div>\n" +
         "                        </div>\n" +
         "                    </div>",
@@ -103,7 +104,7 @@ function showAllRating(btn) {
     });
     //渲染
     var ins1 = rate.render({
-        elem: '#rating',
+        elem: '#preference',
         half:true,
         choose:function (value) {
             setPreference(itemEntity,value)
@@ -115,7 +116,7 @@ function setPreference(itemEntity,value) {
     var itemId = itemEntity.itemId;
     console.log(itemId);
     $.ajax({
-        url: baseUrl + "/item/rating",
+        url: baseUrl + "/item/preference",
         type: "POST",
         data:{userId:userId,itemId:itemId,preference:value},
         success: function (result) {
@@ -245,4 +246,8 @@ function  searchName(pageIndex,size) {
             }
         }
     })
+}
+function updateAvatar() {
+    $("#avatar").attr("src", "assets/img/avatar/" + $.cookie('avatar'));
+    $("#userIdName").html("用户"+$.cookie('userId'));
 }

@@ -17,4 +17,9 @@
     <select id="getUserIdList" resultType="java.lang.Long">
         select distinct user_id  from userdata
     </select>
+    <select id="getAvePreference" resultType="com.gyj.gx.domain.Recommend">
+           select item_id,avg(preference) as preference  from userdata where item_id in
+            <foreach collection="list" item="item" separator="," close=")" open="(">#{item}</foreach>
+            group by item_id
+    </select>
 </mapper>

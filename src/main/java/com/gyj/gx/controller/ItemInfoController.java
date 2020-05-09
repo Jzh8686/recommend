@@ -21,7 +21,7 @@ public class ItemInfoController {
     }
     @GetMapping("mayLike")
     public RespEntity mayLisk(@RequestParam("userId") Long userId){
-        return new RespEntity(RespCode.SUCCESS,userDataService.generateRecommend(userId));
+        return new RespEntity(RespCode.SUCCESS,userDataService.generateItemRecommend(userId));
     }
     @PostMapping("rating")
     public RespEntity ratingItem(@RequestParam("userId")Long userId,@RequestParam("itemId")Long itemId,@RequestParam("preference")Float preference){
@@ -35,5 +35,9 @@ public class ItemInfoController {
     @GetMapping("moviceYear")
     public RespEntity searchByYear(@RequestParam("startYear")Integer startYear,@RequestParam("endYear")Integer endYear,@RequestParam("pageIndex")Integer pageIndex,@RequestParam("size")Integer size){
         return new RespEntity(RespCode.SUCCESS,itemInfoService.getMoviceByYear(startYear,endYear,pageIndex,size));
+    }
+    @GetMapping("evaluate")
+    public RespEntity  evaluate(){
+        return new RespEntity(RespCode.SUCCESS,userDataService.evaluator());
     }
 }
