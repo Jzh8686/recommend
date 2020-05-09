@@ -123,13 +123,7 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataMapper,UserDataEnti
             Map<Long, Float> idToValueMap = recommendedItemList.stream().collect(Collectors.toMap(RecommendedItem::getItemID, RecommendedItem::getValue));
             List<Long> itemIdList = recommendedItemList.stream().map(x -> x.getItemID()).collect(Collectors.toList());
             list = itemInfoMapper.getItemByItemId(itemIdList);
-            list.forEach(x->{
-                MayLikeDTO temp = new MayLikeDTO();
-                BeanUtils.copyProperties(x,temp);
-                temp.setPreference(idToValueMap.get(x.getItemId()));
-                res.add(temp);
-            });
-
+            res = ItemInfoServiceImpl.entityToDTO(list,idToValueMap);
         }catch (Exception e){
             e.getStackTrace();
         }

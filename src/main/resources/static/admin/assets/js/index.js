@@ -49,9 +49,10 @@ function getLatestItem() {
                     "</span>\n" +
                     "    <span style=\"float: right\" class=\"card-title\">" +releaseDate+
                     "</span></div>\n"+
-                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button></div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>评分：</span><span>" + preference.toFixed(2)+
+                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showLatestRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>评分：</span><span>" + preference.toFixed(2)+
                     "  </div>\n" +
                     "</div>");
             }
@@ -79,10 +80,11 @@ function youLike() {
                     "</span>\n" +
                     "    <span style=\"float: right\" class=\"card-title\">" +releaseDate+
                     "</span></div>\n"+
-                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button></div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
-                    "</span></div></div>\n" +
+                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
+                    "</span></div></div>\n" +
                     "  </div>\n" +
                     "</div>");
             }

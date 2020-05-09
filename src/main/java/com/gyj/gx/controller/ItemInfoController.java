@@ -23,7 +23,7 @@ public class ItemInfoController {
     public RespEntity mayLisk(@RequestParam("userId") Long userId){
         return new RespEntity(RespCode.SUCCESS,userDataService.generateItemRecommend(userId));
     }
-    @PostMapping("rating")
+    @PostMapping("preference")
     public RespEntity ratingItem(@RequestParam("userId")Long userId,@RequestParam("itemId")Long itemId,@RequestParam("preference")Float preference){
        userDataService.ratingItem(userId,itemId,preference);
         return new RespEntity(RespCode.SUCCESS);

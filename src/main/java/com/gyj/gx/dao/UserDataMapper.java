@@ -15,5 +15,5 @@ public interface UserDataMapper extends BaseMapper<UserDataEntity> {
     void insertUserData(@Param("data") UserDataEntity userDataEntity);
     List<UserDataEntity> getUserData(Integer id);
     List<Long> getUserIdList();
-    List<Recommend> getAvePreference(@Param("list")List list);
+    List<Recommend> getAvePreference(@Param("list")List<Long> list);
 }

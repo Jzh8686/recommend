@@ -30,16 +30,11 @@ public class ItemInfoServiceImpl extends ServiceImpl<ItemInfoMapper, ItemInfoEnt
     UserDataMapper userDataMapper;
     public List<MayLikeDTO> getLatestItem() {
         List<ItemInfoEntity> latestItem = itemInfoMapper.getLatestItem();
-        List<MayLikeDTO> res = new ArrayList<>();
         List<Long> itemList = latestItem.stream().map(ItemInfoEntity::getItemId).collect(Collectors.toList());
         List<Recommend> avePreference = userDataMapper.getAvePreference(itemList);
         Map<Long, Float> idToValueMap = avePreference.stream().collect(Collectors.toMap(Recommend::getItemId, Recommend::getPreference));
-        latestItem.forEach(x->{
-            MayLikeDTO mayLikeDTO = new MayLikeDTO();
-            BeanUtils.copyProperties(x,mayLikeDTO);
-            mayLikeDTO.setPreference(idToValueMap.get(x.getItemId()));
-            res.add(mayLikeDTO);
-        });
+        List<MayLikeDTO> res = ItemInfoServiceImpl.entityToDTO(latestItem, idToValueMap);
+
         return res;
     }
 
@@ -55,7 +50,12 @@ public class ItemInfoServiceImpl extends ServiceImpl<ItemInfoMapper, ItemInfoEnt
             wrapper.like("movice_name", moviceName);
         Page<ItemInfoEntity> page = new Page<>(pageIndex,size);
         Page<ItemInfoEntity> list = itemInfoMapper.selectPage(page,wrapper);
-        return new ItemInfoDTO(list.getRecords(),list.getTotal());
+        List<ItemInfoEntity> records = list.getRecords();
+        List<Long> idList = records.stream().map(x -> x.getItemId()).collect(Collectors.toList());
+        List<Recommend> avePreference = userDataMapper.getAvePreference(idList);
+        Map<Long, Float> idToValueMap = avePreference.stream().collect(Collectors.toMap(x -> x.getItemId(), x -> x.getPreference()));
+        List<MayLikeDTO> res = ItemInfoServiceImpl.entityToDTO(records, idToValueMap);
+        return new ItemInfoDTO(res,list.getTotal());
     }
 
     @Override
@@ -69,6 +69,22 @@ public class ItemInfoServiceImpl extends ServiceImpl<ItemInfoMapper, ItemInfoEnt
         wrapper.gt("release_date",startDate.getTime());
         Page<ItemInfoEntity> page = new Page<>(pageIndex,size);
         Page<ItemInfoEntity> list = itemInfoMapper.selectPage(page,wrapper);
-        return new ItemInfoDTO(list.getRecords(),list.getTotal());
+        List<ItemInfoEntity> records = list.getRecords();
+        List<Long> idList = records.stream().map(x -> x.getItemId()).collect(Collectors.toList());
+        List<Recommend> avePreference = userDataMapper.getAvePreference(idList);
+        Map<Long, Float> idToValueMap = avePreference.stream().collect(Collectors.toMap(x -> x.getItemId(), x -> x.getPreference()));
+        List<MayLikeDTO> res = ItemInfoServiceImpl.entityToDTO(records, idToValueMap);
+        return new ItemInfoDTO(res,list.getTotal());
+    }
+
+    public static List<MayLikeDTO> entityToDTO(List<ItemInfoEntity> itemInfoEntityList,Map<Long,Float> idToPreferenceMap){
+        List<MayLikeDTO> res = new ArrayList<>();
+        itemInfoEntityList.forEach(x->{
+            MayLikeDTO mayLikeDTO = new MayLikeDTO();
+            BeanUtils.copyProperties(x,mayLikeDTO);
+            mayLikeDTO.setPreference(idToPreferenceMap.get(x.getItemId()));
+            res.add(mayLikeDTO);
+        });
+        return res;
     }
 }

@@ -7,10 +7,10 @@ import java.util.List;
 
 @Data
 public class ItemInfoDTO {
-    List<ItemInfoEntity> list;
+    List<MayLikeDTO> list;
     Long totalPage;
 
-    public ItemInfoDTO(List<ItemInfoEntity> list, Long totalPage) {
+    public ItemInfoDTO(List<MayLikeDTO> list, Long totalPage) {
         this.list = list;
         this.totalPage = totalPage;
     }

@@ -66,9 +66,11 @@ function searchByName() {
                     "</span>\n" +
                     "    <span style=\"float: right\" class=\"card-title\">" +releaseDate+
                     "</span></div>\n"+
-                    "    <button onclick='showAllRating(this)' class=\"btn btn-primary\">详情</button>\n" +
+                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
+
                     "  </div>\n" +
                     "</div>");
             }
@@ -167,9 +169,11 @@ function searchItemByYear(end,start) {
                     "</span>\n" +
                     "    <span style=\"float: right\" class=\"card-title\">" +releaseDate+
                     "</span></div>\n"+
-                    "    <button onclick='showAllRating(this)' class=\"btn btn-primary\">详情</button>\n" +
+                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
+
                     "  </div>\n" +
                     "</div>");
             }
@@ -202,9 +206,10 @@ function search(pageIndex,size) {
                     "</span>\n" +
                     "    <span style=\"float: right\" class=\"card-title\">" +releaseDate+
                     "</span></div>\n"+
-                    "    <button onclick='showAllRating(this)' class=\"btn btn-primary\">详情</button>\n" +
+                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
                     "  </div>\n" +
                     "</div>");
             }
@@ -238,9 +243,10 @@ function  searchName(pageIndex,size) {
                     "</span>\n" +
                     "    <span style=\"float: right\" class=\"card-title\">" +releaseDate+
                     "</span></div>\n"+
-                    "    <button onclick='showAllRating(this)' class=\"btn btn-primary\">详情</button>\n" +
+                    "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
                     "  </div>\n" +
                     "</div>");
             }
