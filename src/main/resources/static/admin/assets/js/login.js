@@ -15,6 +15,7 @@ function login() {
                 window.location.href = 'http://localhost:8091/admin/index.html';
                 $.cookie("avatar",info.avatar);
                 $.cookie("userId",info.userId);
+                $.cookie("username",info.username);
                 console.log(result);
             }else {
                 alert(mes);

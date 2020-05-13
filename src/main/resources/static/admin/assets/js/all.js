@@ -70,7 +70,7 @@ function searchByName() {
                     "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
-                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>评分：</span><span>" + preference.toFixed(2)+
 
                     "  </div>\n" +
                     "</div>");
@@ -174,7 +174,7 @@ function searchItemByYear(end,start) {
                     "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
-                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>评分：</span><span>" + preference.toFixed(2)+
 
                     "  </div>\n" +
                     "</div>");
@@ -212,7 +212,7 @@ function search(pageIndex,size) {
                     "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
-                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>评分：</span><span>" + preference.toFixed(2)+
                     "  </div>\n" +
                     "</div>");
             }
@@ -250,7 +250,7 @@ function  searchName(pageIndex,size) {
                     "    <div class=\"row am-cf\" style=\"width:100%\"><div class=\"am-u-sm-12 am-u-md-4\"><button onclick='showYouLikeRating(this)' class=\"btn btn-primary\">详情</button>" +
                     "  <span style=\"display:none\">" +i+
                     "</span>\n" +
-                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>推荐指数：</span><span>" + preference.toFixed(2)+
+                    "</div><div style=\"font-size: 15px;margin-top: 2px\" class=\"am-u-sm-12 am-u-md-8 \"><span>评分：</span><span>" + preference.toFixed(2)+
                     "  </div>\n" +
                     "</div>");
             }
@@ -259,5 +259,6 @@ function  searchName(pageIndex,size) {
 }
 function updateAvatar() {
     $("#avatar").attr("src", "assets/img/avatar/" + $.cookie('avatar'));
-    $("#userIdName").html("用户"+$.cookie('userId'));
+    $("#userIdName").html( $.cookie("username"));
+    $("#hunaying").html( $.cookie("username"));
 }

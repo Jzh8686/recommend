@@ -930,7 +930,8 @@ function denyEnter() {
 }
 function updateAvatar() {
     $("#avatar").attr("src", "assets/img/avatar/" + $.cookie('avatar'));
-    $("#userIdName").html("用户"+$.cookie('userId'));
+    $("#userIdName").html( $.cookie("username"));
+    $("#hunaying").html( $.cookie("username"));
     $("#avatar2").attr("src", "assets/img/avatar/" + $.cookie('avatar'));
     mySpaceInfo();
 }

@@ -138,8 +138,8 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataMapper,UserDataEnti
     public EvaluateDTO evaluator() {
         EvaluateDTO evaluateDTO = new EvaluateDTO();
         try {
-            double MAE = recommenderEvaluator.evaluate(recommenderBuilder, null, recommender.getDataModel(), 0.7, 0.3);
-            IRStatistics evaluate = recommenderIRStatsEvaluator.evaluate(recommenderBuilder, null, recommender.getDataModel(), null, 2, GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 1.0);
+            double MAE = recommenderEvaluator.evaluate(recommenderBuilder, null, recommender.getDataModel(), 0.8, 0.2);
+            IRStatistics evaluate = recommenderIRStatsEvaluator.evaluate(recommenderBuilder, null, recommender.getDataModel(), null, 5, GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 0.2);
             evaluateDTO.setMAE(MAE);
             evaluateDTO.setRecall(evaluate.getRecall());
             evaluateDTO.setPrecision(evaluate.getPrecision());
